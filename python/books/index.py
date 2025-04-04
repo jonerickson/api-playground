@@ -16,6 +16,10 @@ def create_app():
 app = create_app()
 jwt = JWTManager(app)
 
+@app.route('/', methods=['GET'])
+def index():    
+    return jsonify({"message": "Okay", "language": "Python", "framework": "Flask"})
+
 @app.route("/login", methods=["POST"])
 def login():
     username = request.authorization.username
@@ -43,7 +47,7 @@ def get_book_by_id(id):
     book = Book.get_by_id(id)
 
     if book is None:
-        return jsonify({"error": "Book not found."}), 404
+        return jsonify({"error": "The book could not be found."}), 404
     
     return jsonify({"data": BookSchema().dump(book)})
 
@@ -68,7 +72,7 @@ def update_book(id):
     book = Book.get_by_id(id)
 
     if book is None:
-        return jsonify({"error": "Book not found."}), 404
+        return jsonify({"error": "The book could not be found."}), 404
     
     try:
         data = BookSchema(partial=True).load(request.get_json())
@@ -88,7 +92,7 @@ def delete_book(id):
     book = Book.get_by_id(id)
 
     if book is None:
-        return jsonify({"error": "Book not found."}), 404
+        return jsonify({"error": "The book could not be found."}), 404
     
     book.delete()
     
