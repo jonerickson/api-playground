@@ -13,7 +13,7 @@ A multi-language test to build simple APIs in multiple languages that meet the f
 ## Specifications/Features
 
 1. Authentication/Authorization
-2. Database Interaction
+2. Database Interaction (ORM)
 3. Rate Limiting
 4. Request Validation
 5. Content Type Transformation
