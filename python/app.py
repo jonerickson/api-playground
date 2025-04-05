@@ -26,9 +26,11 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 class ApiException(Exception):
-    def __init__(self, message, code):
+    def __init__(self, message, code, details=None):
+        super().__init__(message)
         self.message = message
         self.code = code
+        self.details = details
 
 class Book(db.Model):
     __tablename__ = 'books'
@@ -99,7 +101,7 @@ def create_book():
     try:
         data = book_schema.load(request.get_json())
     except ValidationError as err:
-        raise ApiException(err.messages, 422)
+        raise ApiException('The request validation failed.', 422, err.messages)
     
     book = Book(title=data["title"], author=data["author"])
 
@@ -120,7 +122,7 @@ def update_book(id):
     try:
         data = book_schema.load(request.get_json(), partial=True)
     except ValidationError as err:
-        raise ApiException(err.messages, 422)
+        raise ApiException('The request validation failed.', 422, err.messages)
 
     book.title = data.get("title", book.title)
     book.author = data.get("author", book.author)
@@ -162,7 +164,8 @@ def wrap_response(response: Response) -> Response:
         wrapped_data["data"] = original_data
 
     if status == "error":
-        wrapped_data["error"] = original_data["error"] if "error" in original_data else original_data
+        wrapped_data["message"] = original_data["error"] if "error" in original_data else original_data
+        wrapped_data["details"] = original_data["details"] if "details" in original_data else None
 
     new_response = jsonify(wrapped_data)
     new_response.status_code = status_code
@@ -173,11 +176,13 @@ def wrap_response(response: Response) -> Response:
 def handle_exception(e):
     status_code = 500
     error_message = str(e)
+    details = None
 
     if isinstance(e, ApiException):
         status_code = str(e.code)
         error_message = str(e.message)
+        details = e.details
     else:
         app.logger.error(f"Unhandled exception: {str(e)}")
 
-    return jsonify({"error": error_message}), status_code
+    return jsonify({"error": error_message, "details": details}), status_code
