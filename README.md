@@ -16,7 +16,8 @@ A multi-language test to build simple APIs in multiple languages that meet the f
 2. Database Interaction (ORM)
 3. Rate Limiting
 4. Request Validation
-5. Content Type Transformation
+5. Content Type Negotiation
+6. Global Error/Exception Handling
 
 ### Resources/Endpoints
 
@@ -25,85 +26,3 @@ A multi-language test to build simple APIs in multiple languages that meet the f
 - `POST /books`
 - `PUT /books/{id}`
 - `DELETE /books/{id}`
-
-### Responses
-
-`GET /books`
-
-```json
-// 200 OK
-{
-    "data": [
-        {
-            "id": 1,
-            "title": "Book 1",
-            "author": "Author 1",
-        }
-        ...
-    ]
-}
-```
-
-`GET /books/1`
-
-```json
-// 200 OK
-{
-    {
-        "id": 1,
-        "title": "Book 1",
-        "author": "Author 1",
-    }
-}
-```
-
-`POST /books`
-
-```json
-// 201 Created
-{
-    {
-        "id": 1,
-        "title": "Book 1",
-        "author": "Author 1",
-    }
-}
-```
-
-`PUT /books/1`
-
-```json
-// 200 OK
-{
-    {
-        "id": 1,
-        "title": "Book 1",
-        "author": "Author 1",
-    }
-}
-```
-
-`DELETE /books/1`
-
-```json
-// 204 No Content
-""
-```
-
-### Errors
-
-`404`
-
-```json
-{
-    "error": "The book could not be found."
-}
-```
-
-`422`
-
-```json
-{
-    "error": "...."
-}
-```
