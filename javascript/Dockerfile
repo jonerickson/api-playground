@@ -11,4 +11,4 @@ RUN touch database.sqlite
 RUN npm ci
 
 EXPOSE 3000
-ENTRYPOINT ["/usr/src/app/entrypoint.sh", "file:/usr/src/app/database.sqlite"]
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

@@ -15,5 +15,5 @@ docker build . -t api-playground/python:latest
 ## Running The Server
 
 ```bash
-docker run --name api-playground-python -d -e JWT_SECRET=secret -e DATABASE_URL="sqlite:///database.sqlite" --restart always -p 3000:3000 api-playground/python:latest
+docker run --name api-playground-python -d -e JWT_SECRET=secret -e DATABASE_URL="sqlite:////usr/src/app/database.sqlite" --restart always -p 3000:3000 api-playground/python:latest
 ```
